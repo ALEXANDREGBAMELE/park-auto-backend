@@ -1,0 +1,3 @@
+# Forcer l'utilisation de LF (Unix) comme format EOL pour package-lock.json et package.json
+package-lock.json text eol=lf
+package.json text eol=lf
