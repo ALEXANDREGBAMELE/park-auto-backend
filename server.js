@@ -1,7 +1,9 @@
-const app = require('./src/app'); // Importer l'application Express configurée
+const http = require('http');
+const app = require('./app'); 
+const port = 3000;
 
-const PORT = process.env.PORT || 3000; // Définir le port du serveur (utilisez le port par défaut 3000 si la variable d'environnement PORT n'est pas définie)
+const server = http.createServer(app);
 
-app.listen(PORT, () => {
-  console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+app.listen(port, () => {
+  console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });

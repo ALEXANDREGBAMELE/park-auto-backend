@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const dbConnection = require('../config/database'); // Importer la connexion à la base de données
+// const dbConnection = require('../config/database'); // Importer la connexion à la base de données
 
 // // Créer une instance d'Express.js
 const app = express();
@@ -11,18 +11,19 @@ const app = express();
 app.use(cors()); // Activer CORS pour permettre les requêtes depuis différents domaines
 app.use(bodyParser.json()); // Parser les données JSON dans les requêtes
 
-// // Importer les routes
-const userRouter = require('./routers/userRouter'); 
-const roleRouter = require('./routers/roleRouter'); 
-const carRouter = require('./routers/carRouter');
-const parkingRouter = require('./routers/parkingRouter');
-// const roleRoutes = require('./routers/roleRouter'); // Importer les routes des rôles
+// Importer les routes
+const userRoute = require('./routes/user.route');
+const roleRoute = require('./routes/role.route'); 
+const parkingRoute = require('./routes/parking.route');
+const levelRoute = require('./routes/level.route');
+const spaceRoute = require('./routes/space.route'); 
 
 // Utiliser les routes
-app.use('/users', userRouter);
-app.use('/roles', roleRouter);
-app.use('/cars', carRouter);
-app.use('/parkings', parkingRouter);
+app.use('/users', userRoute);
+app.use('/roles', roleRoute);
+app.use('/parkings', parkingRoute);
+app.use('/levels', levelRoute);
+app.use('/spaces', spaceRoute);
 // // Gestion des erreurs
 app.use((req, res, next) => {
   const error = new Error('Not Found');
