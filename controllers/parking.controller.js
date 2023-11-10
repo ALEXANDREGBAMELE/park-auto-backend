@@ -4,8 +4,17 @@ const models = require('../models')
 function save(req, res) {
     const parking = {
         name: req.body.name,
-        capacity: req.body.capacity,
         address: req.body.address,
+        capacity: req.body.capacity,
+        spaceAvailable: req.body.spaceAvailable,
+        hourlyRate: req.body.hourlyRate,
+        closureHour: req.body.closureHour,
+        openingHour: req.body.openingHour,
+        status: req.body.status,
+        gpsCoordinates: req.body.gpsCoordinates,
+        comments: req.body.comments,
+        imageUrl: req.body.imageUrl,
+
     }
 
     models.Parking.create(parking).then(result => {
@@ -38,7 +47,7 @@ function index(req, res) {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la recuperation des parking"
+            message: "Une erreur est survenue lors de la recuperation des parkings"
         })
     })
 }
@@ -47,8 +56,16 @@ function update(req, res) {
     const id = req.params.id;
     const updateUser = {
         name: req.body.name,
-        capacity: req.body.capacity,
         address: req.body.address,
+        capacity: req.body.capacity,
+        spaceAvailable: req.body.spaceAvailable,
+        hourlyRate: req.body.hourlyRate,
+        closureHour: req.body.closureHour,
+        openingHour: req.body.openingHour,
+        status: req.body.status,
+        gpsCoordinates: req.body.gpsCoordinates,
+        comments: req.body.comments,
+        imageUrl: req.body.imageUrl,
     }
 
     models.Parking.update(updateUser, { where: { id: id } }).then(result => {
@@ -62,7 +79,7 @@ function update(req, res) {
     })
 }
 
-function destory(req, res){
+function destory(req, res) {
     const id = req.params.id;
 
     models.Parking.destory({ where: { id: id } }).then(result => {
@@ -81,5 +98,5 @@ module.exports = {
     show: show,
     index: index,
     update: update,
-    destory : destory
+    destory: destory
 }

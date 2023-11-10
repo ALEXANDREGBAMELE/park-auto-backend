@@ -1,4 +1,5 @@
 {
+ 
   "development": {
     "username": "root",
     "password": null,
@@ -15,9 +16,10 @@
   },
   "production": {
     "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "password": "WEYueSnG",
+    "database": "nodeback",
+    "host": "phpmyadmin-c011.cloudclusters.net/",
+    "port":"10018",
     "dialect": "mysql"
   }
 }
