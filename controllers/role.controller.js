@@ -46,5 +46,6 @@ function index(req, res) {
 
 module.exports = {
     show: show,
-    index: index,  
+    index: index, 
+    save: save, 
 }
