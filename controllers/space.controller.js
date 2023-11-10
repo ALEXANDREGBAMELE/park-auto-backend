@@ -66,10 +66,10 @@ function update(req, res) {
     })
 }
 
-function destory(req, res) {
+function destroy(req, res) {
     const id = req.params.id;
 
-    models.Space.destory({ where: { id: id } }).then(result => {
+    models.Space.destroy({ where: { id: id } }).then(result => {
         res.status(200).json({
             message: "Utilisateur suprimé avec succes"
         });
@@ -85,5 +85,5 @@ module.exports = {
     show: show,
     index: index,
     update: update,
-    destory: destory
+    destroy: destroy,
 }

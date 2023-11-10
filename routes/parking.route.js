@@ -7,6 +7,6 @@ router.post("/", parkingController.save);
 router.get("/", parkingController.index);
 router.get("/:id", parkingController.show);
 router.put("/:id", parkingController.update);
-router.delete("/:id", parkingController.destory);
+router.delete("/:id", parkingController.destroy);
 
 module.exports = router;

@@ -7,6 +7,6 @@ router.post("/", spaceContrpoller.save);
 router.get("/", spaceContrpoller.index);
 router.get("/:id", spaceContrpoller.show);
 router.put("/:id", spaceContrpoller.update);
-router.delete("/:id", spaceContrpoller.destory);
+router.delete("/:id", spaceContrpoller.destroy);
 
 module.exports = router;
