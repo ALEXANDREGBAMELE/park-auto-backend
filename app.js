@@ -11,6 +11,12 @@ const app = express();
 app.use(cors()); // Activer CORS pour permettre les requêtes depuis différents domaines
 app.use(bodyParser.json()); // Parser les données JSON dans les requêtes
 
+app.get('/', function(req, res) {
+  console.log(req.body);
+  res.send('Hello World');
+});
+
+
 // Importer les routes
 const userRoute = require('./routes/user.route');
 const roleRoute = require('./routes/role.route'); 
