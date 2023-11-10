@@ -18,7 +18,7 @@
     "username": "root",
     "password": "WEYueSnG",
     "database": "nodeback",
-    "host": "phpmyadmin-c011.cloudclusters.net/",
+    "host": "phpmyadmin-c011.cloudclusters.net",
     "port":"10018",
     "dialect": "mysql"
   }
