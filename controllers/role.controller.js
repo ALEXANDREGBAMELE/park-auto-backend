@@ -1,5 +1,27 @@
 const models = require('../models')
 
+function save(req, res) {
+    const role = {
+        number: req.body.number,
+        status: req.body.status,
+        occupacyTime: req.body.occupacyTime,
+        userId: req.body.userId,
+        levelId: req.body.levelId
+    }
+
+    models.Role.create(role).then(result => {
+        res.status(200).json({
+            message: "creation avec succes !",
+            space: result
+        })
+    }).catch(error => {
+        res.status(500).json({
+            message: "Une erreur est survenue lors de la creation de Role",
+            error: error
+        })
+    })
+}
+
 function show(req, res) {
     const id = req.params.id;
 
