@@ -92,10 +92,22 @@ function destroy(req, res) {
     })
 }
 
+async function tester(req, res) {
+    // One to many
+    const level = await models.Level.findByPk(2, {
+        include: [models.Space]
+    })
+
+    res.status(200).json({
+        data: level
+    })
+};
+
 module.exports = {
     save: save,
     show: show,
     index: index,
     update: update,
-    destroy: destroy
+    destroy: destroy,
+    tester, tester
 }

@@ -93,10 +93,24 @@ function destroy(req, res) {
     })
 }
 
+
+async function tester(req, res) {
+    // One to many
+    const parking = await models.Parking.findByPk(3, {
+        include: [models.Level]
+    })
+
+    res.status(200).json({
+        data: parking
+    })
+};
+
+
 module.exports = {
     save: save,
     show: show,
     index: index,
     update: update,
-    destroy: destroy
+    destroy: destroy,
+    tester: tester,
 }

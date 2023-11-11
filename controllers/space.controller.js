@@ -1,6 +1,7 @@
 
 const models = require('../models')
 
+
 function save(req, res) {
     const space = {
         number: req.body.number,
@@ -10,18 +11,40 @@ function save(req, res) {
         levelId: req.body.levelId
     }
 
-    models.Space.create(space).then(result => {
-        res.status(200).json({
-            message: "creation avec succes !",
-            space: result
+    models.Level.findByPk(req.body.levelId)
+        .then(level => {
+            if (level !== null) {
+                models.Space.create(space)
+                    .then(createdSpace => {
+                        res.status(200).json({
+                            message: "Création réussie !",
+                            space: createdSpace
+                        });
+                    })
+                    .catch(error => {
+                        res.status(500).json({
+                            message: "Une erreur est survenue lors de la création de l'espace",
+                            error: error
+                        });
+                    });
+            } else {
+                res.status(400).json({
+                    message: "Niveau de parking invalide",
+                });
+            }
         })
-    }).catch(error => {
-        res.status(500).json({
-            message: "Une erreur est survenue lors de la creation d'utilisateur",
-            error: error
-        })
-    })
+        .catch(error => {
+            res.status(500).json({
+                message: "Une erreur est survenue lors de la recherche du niveau de parking",
+                error: error
+            });
+        });
 }
+
+
+
+
+
 
 function show(req, res) {
     const id = req.params.id;
@@ -30,7 +53,7 @@ function show(req, res) {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la recuperation d'utilisateur"
+            message: "Une erreur est survenue lors de la recuperation d'espace"
         })
     })
 }
@@ -40,7 +63,7 @@ function index(req, res) {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la recuperation des utilisateurs"
+            message: "Une erreur est survenue lors de la recuperation des espaces"
         })
     })
 }
@@ -57,11 +80,11 @@ function update(req, res) {
 
     models.Space.update(updateSpace, { where: { id: id } }).then(result => {
         res.status(200).json({
-            message: "Utilisateur mise a jours avec succes"
+            message: "espace mise a jours avec succes"
         });
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la mise à jours de l'utilisateurs"
+            message: "Une erreur est survenue lors de la mise à jours d'espace"
         })
     })
 }
@@ -71,11 +94,11 @@ function destroy(req, res) {
 
     models.Space.destroy({ where: { id: id } }).then(result => {
         res.status(200).json({
-            message: "Utilisateur suprimé avec succes"
+            message: "Spaces suprimé avec succes"
         });
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la supression de l'utilisateurs"
+            message: "Une erreur est survenue lors de la supression d'espace"
         })
     })
 }

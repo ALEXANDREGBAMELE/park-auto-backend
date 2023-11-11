@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      // Parking.hasOne(sequelize.define('Level'));
+      Parking.hasMany(sequelize.define('Level'));
     }
   }
   Parking.init({
