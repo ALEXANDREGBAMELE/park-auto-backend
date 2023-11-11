@@ -22,6 +22,27 @@ function save(req, res) {
     })
 }
 
+function update(req, res) {
+    const id = req.params.id;
+    const updateRole = {
+        number: req.body.number,
+        status: req.body.status,
+        occupacyTime: req.body.occupacyTime,
+        userId: req.body.userId,
+        levelId: req.body.levelId
+    }
+
+    models.Role.update(updateRole, { where: { id: id } }).then(result => {
+        res.status(200).json({
+            message: "Role mise a jours avec succes"
+        });
+    }).catch(error => {
+        res.status(500).json({
+            message: "Une erreur est survenue lors de la mise à jours de Role"
+        })
+    })
+}
+
 function show(req, res) {
     const id = req.params.id;
 
@@ -46,6 +67,8 @@ function index(req, res) {
 
 module.exports = {
     show: show,
-    index: index, 
-    save: save, 
+    index: index,
+    save: save,
+    update: update,
+
 }

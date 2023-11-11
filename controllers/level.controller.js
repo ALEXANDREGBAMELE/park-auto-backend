@@ -11,17 +11,28 @@ function save(req, res) {
 
     }
 
-    models.Level.create(level).then(result => {
-        res.status(200).json({
-            message: "creation avec succes !",
-            level: result
-        })
-    }).catch(error => {
-        res.status(500).json({
-            message: "Une erreur est survenue lors de la creation de etage",
-            error: error
-        })
+    models.Parking.findByPk(req.body.parkingId).then(result => {
+        if (result !== null) {
+            models.Level.create(level).then(result => {
+                res.status(200).json({
+                    message: "creation avec succes !",
+                    level: result
+                })
+            }).catch(error => {
+                res.status(500).json({
+                    message: "Une erreur est survenue lors de la creation de etage",
+                    error: error
+                })
+            })
+        }else{
+            res.status(400).json({
+                message: "Parking invalide",
+                error: error
+            })
+        }
     })
+
+
 }
 
 function show(req, res) {
@@ -76,7 +87,7 @@ function destroy(req, res) {
         });
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la supression de parkings"
+            message: "Une erreur est survenue lors de la supression de level"
         })
     })
 }
