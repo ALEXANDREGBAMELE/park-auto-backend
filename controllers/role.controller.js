@@ -65,10 +65,41 @@ function index(req, res) {
     })
 }
 
+const destroy = (req, res) => {
+    const roleId = req.params.roleId;
+
+    models.User.findOne({
+        where: { roleId: roleId }
+    }).then(user => {
+        if (user) {
+            res.status(400).json({
+                message: "Ce rôle est actuellement utilisé par au moins un utilisateur. Vous ne pouvez pas le supprimer."
+            });
+        } else {
+            models.Role.destroy({
+                where: { roleId: roleId }
+            }).then(result => {
+                res.status(200).json({
+                    message: "Rôle supprimé avec succès"
+                });
+            }).catch(error => {
+                res.status(500).json({
+                    message: "Une erreur est survenue lors de la suppression du rôle"
+                });
+            });
+        }
+    }).catch(error => {
+        res.status(500).json({
+            message: "Une erreur est survenue lors de la vérification des utilisateurs liés au rôle"
+        });
+    });
+};
+
 module.exports = {
     show: show,
     index: index,
     save: save,
     update: update,
+    destroy: destroy,
 
 }
