@@ -4,20 +4,8 @@ const models = require('../models');
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-// async function test(req,res){
-//     const user = await models.User.findByPk(1,{
-//         include:[models.Role]
-//     })
 
-//     const role = await models.Role.findByPk(1)
-
-//     res.status(200).json({
-//         data:role
-//     })
-// }
-
-
-const signUp = (req, res) => {
+const save = (req, res) => {
     models.User.findOne({ where: { email: req.body.email } })
         .then(existingUser => {
             if (existingUser) {
@@ -97,40 +85,6 @@ const signUp = (req, res) => {
 
 
 
-function login(req, res) {
-    models.User.findOne({ where: { email: req.body.email } }).then(user => {
-        if (user == null) {
-            res.status(401).json({
-                message: "authentification invalide",
-            })
-        } else {
-            bcryptjs.compare(req.body.password, user.password, function (err, result) {
-                if (result) {
-                    const token = jwt.sign({
-                        email: user.email,
-                        userId: user.id
-                    }, 'secret', function (err, token) {
-                        res.status(200).json({
-                            message: "authentification avec succès",
-                            token: token
-                        });
-                    });
-                } else {
-                    res.status(401).json({
-                        message: "authentification invalide",
-                    })
-                }
-            });
-        }
-    }).catch(error => {
-        res.status(500).json({
-            message: "Une erreur est survenue",
-            error: error
-        });
-    });
-}
-
-
 function show(req, res) {
     const id = req.params.id;
 
@@ -188,8 +142,7 @@ function destroy(req, res) {
 }
 
 module.exports = {
-    signUp: signUp,
-    login: login,
+    save: save,
     show: show,
     index: index,
     update: update,

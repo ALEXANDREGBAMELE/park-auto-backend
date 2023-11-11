@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('stations', {
+    await queryInterface.createTable('reservations', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,20 +12,17 @@ module.exports = {
       carId: {
         type: Sequelize.INTEGER
       },
-      userId: {
-        type: Sequelize.INTEGER
-      },
       spaceId: {
         type: Sequelize.INTEGER
       },
-      reservationId: {
+      date: {
+        type: Sequelize.TIME
+      },
+      price: {
+        type: Sequelize.FLOAT
+      },
+      parkingId: {
         type: Sequelize.INTEGER
-      },
-      arrived: {
-        type: Sequelize.TIME
-      },
-      leave: {
-        type: Sequelize.TIME
       },
       createdAt: {
         allowNull: false,
@@ -38,6 +35,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('stations');
+    await queryInterface.dropTable('reservations');
   }
 };
