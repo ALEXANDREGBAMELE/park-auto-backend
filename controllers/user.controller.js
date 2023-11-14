@@ -102,7 +102,7 @@ async function login(req, res) {
                 userId: user.id
             }, 'secret');
 
-            // Include user data in the response
+           
             return res.status(200).json({
                 message: "Authentification réussie",
                 token: token,
