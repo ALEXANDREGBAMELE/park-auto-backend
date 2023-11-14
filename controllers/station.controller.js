@@ -1,150 +1,103 @@
-const Validator = require('fastest-validator');
-const models = require('../models');
-// const bcryptjs = require("jsonwebtoken");
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const models = require('../models')
 
+function save(req, res) {
+    const station = {
+        carId: req.body.carId,
+        userId: req.body.userId,
+        spaceId: req.body.spaceId,
+        reservationId: req.body.reservationId,
+        arrived: req.body.arrived,
+        leave: req.body.leave
+    }
 
-const save = (req, res) => {
-    models.User.findOne({ where: { email: req.body.email } })
-        .then(existingUser => {
-            if (existingUser) {
-                // L'utilisateur existe déjà
-                return res.status(409).json({
-                    message: "L'email existe déjà",
-                });
-            } else {
-                // L'utilisateur n'existe pas, procédez à la création
-                bcryptjs.genSalt(10, function (err, salt) {
-                    if (err) {
-                        return res.status(500).json({
-                            message: "Une erreur est survenue lors de la génération du sel",
-                            error: err
-                        });
-                    }
-
-                    bcryptjs.hash(req.body.password, salt, function (err, hash) {
-                        if (err) {
-                            return res.status(500).json({
-                                message: "Une erreur est survenue lors du hachage du mot de passe",
-                                error: err
-                            });
-                        }
-
-                        const user = {
-                            name: req.body.name,
-                            email: req.body.email,
-                            password: hash,
-                            roleId: req.body.roleId
-                        };
-
-                        models.User.create(user)
-                            .then(createdUser => {
-                                res.status(200).json({
-                                    message: "Création réussie !",
-                                    user: createdUser
-                                });
-                            })
-                            .catch(error => {
-                                res.status(500).json({
-                                    message: "Une erreur est survenue lors de la création de l'utilisateur",
-                                    error: error
-                                });
-                            });
-                    });
-                });
-            }
+    models.station.create(station).then(result => {
+        res.status(200).json({
+            message: "creation avec succes !",
+            space: result
         })
-        .catch(error => {
-            res.status(500).json({
-                message: "Une erreur est survenue lors de la recherche de l'utilisateur existant",
-                error: error
-            });
-        });
-};
-
-
-
-
-// const schema = {
-//     name: { type: "string", optional: false, max: "100" },
-//     email: { type: "string", optional: false, max: "100" },
-//     password: { type: "string", optional: false, max: "8" },
-//     roleId: { type: "number", optional: false }
-// }
-
-// const v = new Validator();
-// const validationResponse = v.validate(user, schema)
-
-// if (validationResponse !== true) {
-//     return res.status(400).json({
-//         message: "donnee non valide",
-//         errors: validationResponse
-//     })
-// }
-
-
-
-function show(req, res) {
-    const id = req.params.id;
-
-    models.User.findByPk(id).then(result => {
-        res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la recuperation d'utilisateur"
-        })
-    })
-}
-
-function index(req, res) {
-    models.User.findAll().then(result => {
-        res.status(200).json(result);
-    }).catch(error => {
-        res.status(500).json({
-            message: "Une erreur est survenue lors de la recuperation des utilisateurs"
+            message: "Une erreur est survenue lors de la creation de reservation",
+            error: error
         })
     })
 }
 
 function update(req, res) {
     const id = req.params.id;
-    const updateUser = {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-        roleId: req.body.roleId
+    const updateStation = {
+        carId: req.body.carId,
+        userId: req.body.userId,
+        spaceId: req.body.spaceId,
+        reservationId: req.body.reservationId,
+        arrived: req.body.arrived,
+        leave: req.body.leave
     }
 
-    models.User.update(updateUser, { where: { id: id } }).then(result => {
+    models.station.update(updateStation, { where: { id: id } }).then(result => {
         res.status(200).json({
-            message: "Utilisateur mise a jours avec succes"
+            message: "reservation mise a jours avec succes"
         });
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la mise à jours de l'utilisateurs"
+            message: "Une erreur est survenue lors de la mise à jours de reservation"
         })
     })
 }
 
-function destroy(req, res) {
+function show(req, res) {
     const id = req.params.id;
 
-    models.User.destroy({ where: { id: id } }).then(result => {
-        res.status(200).json({
-            message: "Utilisateur suprimé avec succes"
-        });
+    models.station.findByPk(id).then(result => {
+        res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
-            message: "Une erreur est survenue lors de la supression de l'utilisateurs"
+            message: "Une erreur est survenue lors de la recuperation de reservation"
         })
     })
 }
 
+function index(req, res) {
+    models.station.findAll().then(result => {
+        res.status(200).json(result);
+    }).catch(error => {
+        res.status(500).json({
+            message: "Une erreur est survenue lors de la recuperation des reservation"
+        })
+    })
+}
+
+const destroy = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const result = await models.station.destroy({
+            where: { id: id }
+        });
+
+        if (result === 1) {
+            res.status(200).json({
+                message: "Station supprimée avec succès"
+            });
+        } else {
+            res.status(404).json({
+                message: "Réservation non trouvée"
+            });
+        }
+    } catch (error) {
+        console.error("Une erreur est survenue lors de la suppression de la réservation", error);
+        res.status(500).json({
+            message: "Une erreur est survenue lors de la suppression de la réservation"
+        });
+    }
+};
+
+
 module.exports = {
-    save: save,
     show: show,
     index: index,
+    save: save,
     update: update,
-    destroy: destroy
+    destroy: destroy,
+
 }

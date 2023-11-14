@@ -23,6 +23,8 @@ const roleRoute = require('./routes/role.route');
 const parkingRoute = require('./routes/parking.route');
 const levelRoute = require('./routes/level.route');
 const spaceRoute = require('./routes/space.route'); 
+const reservationRoute = require('./routes/reservation.route'); 
+const stationRoute = require('./routes/station.route'); 
 
 // Utiliser les routes
 app.use('/users', userRoute);
@@ -30,6 +32,8 @@ app.use('/roles', roleRoute);
 app.use('/parkings', parkingRoute);
 app.use('/levels', levelRoute);
 app.use('/spaces', spaceRoute);
+app.use('/reservations', reservationRoute);
+app.use('/stations', stationRoute);
 // // Gestion des erreurs
 app.use((req, res, next) => {
   const error = new Error('Not Found');

@@ -1,6 +1,5 @@
 const Validator = require('fastest-validator');
 const models = require('../models');
-// const bcryptjs = require("jsonwebtoken");
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -111,8 +110,10 @@ function login(req, res) {
                         userId: user.id
                     }, 'secret', function (err, token) {
                         res.status(200).json({
-                            message: "authentification avec succès",
-                            token: token
+                            // message: "authentification avec succès",
+                            token: token,
+                            user : user
+                            
                         });
                     });
                 } else {
@@ -187,11 +188,12 @@ function destroy(req, res) {
     })
 }
 
+
 module.exports = {
     signUp: signUp,
     login: login,
     show: show,
     index: index,
     update: update,
-    destroy: destroy
+    destroy: destroy,
 }

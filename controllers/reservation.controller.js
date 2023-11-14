@@ -9,7 +9,7 @@ function save(req, res) {
         parkingId: req.body.parkingId
     }
 
-    models.Reservation.create(reservation).then(result => {
+    models.reservation.create(reservation).then(result => {
         res.status(200).json({
             message: "creation avec succes !",
             space: result
@@ -32,7 +32,7 @@ function update(req, res) {
         parkingId: req.body.parkingId
     }
 
-    models.Reservation.update(updateReservation, { where: { id: id } }).then(result => {
+    models.reservation.update(updateReservation, { where: { id: id } }).then(result => {
         res.status(200).json({
             message: "reservation mise a jours avec succes"
         });
@@ -46,7 +46,7 @@ function update(req, res) {
 function show(req, res) {
     const id = req.params.id;
 
-    models.Reservation.findByPk(id).then(result => {
+    models.reservation.findByPk(id).then(result => {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
@@ -56,7 +56,7 @@ function show(req, res) {
 }
 
 function index(req, res) {
-    models.Reservation.findAll().then(result => {
+    models.reservation.findAll().then(result => {
         res.status(200).json(result);
     }).catch(error => {
         res.status(500).json({
@@ -65,21 +65,42 @@ function index(req, res) {
     })
 }
 
-const destroy = (req, res) => {
-    const reservationId = req.params.roleId;
+const destroy = async (req, res) => {
+    try {
+        const { id } = req.params;
 
-    models.Role.destroy({
-        where: { reservationId: reservationId }
-    }).then(result => {
-        res.status(200).json({
-            message: "Rôle supprimé avec succès"
+        const result = await models.reservation.destroy({
+            where: { id: id }
         });
-    }).catch(error => {
+
+        if (result === 1) {
+            res.status(200).json({
+                message: "Réservation supprimée avec succès"
+            });
+        } else {
+            res.status(404).json({
+                message: "Réservation non trouvée"
+            });
+        }
+    } catch (error) {
+        console.error("Une erreur est survenue lors de la suppression de la réservation", error);
         res.status(500).json({
-            message: "Une erreur est survenue lors de la suppression du rôle"
+            message: "Une erreur est survenue lors de la suppression de la réservation"
         });
-    });
+    }
 };
+
+async function tester(req, res) {
+    // One to many
+    const reservation = await models.reservation.findByPk(3, {
+        include: [models.Space]
+    })
+
+    res.status(200).json({
+        data: reservation
+    })
+};
+
 
 module.exports = {
     show: show,
@@ -87,5 +108,6 @@ module.exports = {
     save: save,
     update: update,
     destroy: destroy,
+    tester: tester
 
 }
